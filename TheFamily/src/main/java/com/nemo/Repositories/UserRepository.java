@@ -1,4 +1,4 @@
-package Repositories;
+package com.nemo.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
