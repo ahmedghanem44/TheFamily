@@ -1,14 +1,20 @@
 package com.nemo.Models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,10 +22,10 @@ import javax.persistence.Table;
 @Table(name="Users")
 public class User implements Serializable{
 	
-	private enum Role{
-		ADMIN,USER;
-	}
-	
+//	public enum Role{
+//		ADMIN,USER;
+//	}
+//	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="user_id")
@@ -32,9 +38,6 @@ public class User implements Serializable{
 	private String lastName;
 	
 	@Column
-	private String email;
-	
-	@Column
 	private String phone;
 	
 	@Column
@@ -43,63 +46,92 @@ public class User implements Serializable{
 	@Column(name="Pasword")
 	private String userPassword;
 	
-	@Column
-	private Role role;
+	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER )
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
 	
 	@Column(name="last_update")
-	private Date lastUpdated;
+	private Date lastUpdated = new Date();
 	
-	@OneToMany(mappedBy = "user")
-	private List<Account> accounts;
+	@Column
+	private String email;
 	
-	@OneToMany(mappedBy = "user")
-	private List<Loan> loans;
+	@OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set <Account> accounts;
 	
-	@OneToMany(mappedBy = "user")
-	private List<CreditCard> cards;
+	@OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Loan> loans;
 	
-	@OneToMany(mappedBy = "user")
-	private List<IncomeSource> incomes;
+	@OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<CreditCard> cards;
 	
+	@OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Income> incomes;
 	
-	public List<Account> getAccounts() {
-		return accounts;
+
+	public User() {
+		
 	}
 
-	public void setAccounts(List<Account> accounts) {
+	public User(int userId, String firstName, String lastName, String phone, String userName, String userPassword,
+			Set<Role> roles, String email, Set<Account> accounts, Set<Loan> loans, Set<CreditCard> cards,
+			Set<Income> incomes) {
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phone = phone;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.roles = roles;
+		this.lastUpdated = new Date();
+		this.email = email;
 		this.accounts = accounts;
+		this.loans = loans;
+		this.cards = cards;
+		this.incomes = incomes;
 	}
 
-	public List<Loan> getLoans() {
+
+	public Set<Loan> getLoans() {
 		return loans;
 	}
 
-	public void setLoans(List<Loan> loans) {
+	public void setLoans(Set<Loan> loans) {
 		this.loans = loans;
 	}
 
-	public List<CreditCard> getCards() {
+	public Set<CreditCard> getCards() {
 		return cards;
 	}
 
-	public void setCards(List<CreditCard> cards) {
+	public void setCards(Set<CreditCard> cards) {
 		this.cards = cards;
 	}
 
-	public List<IncomeSource> getIncomes() {
+	public Set<Income> getIncomes() {
 		return incomes;
 	}
 
-	public void setIncomes(List<IncomeSource> incomes) {
+	public void setIncomes(Set<Income> incomes) {
 		this.incomes = incomes;
 	}
+
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
+
 
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setLastUpdated() {
+		this.lastUpdated = new Date();
 	}
 
 	public String getUserName() {
@@ -116,14 +148,6 @@ public class User implements Serializable{
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 
 	public int getUserId() {
@@ -164,6 +188,22 @@ public class User implements Serializable{
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone
+				+ ", userName=" + userName + ", userPassword=" + userPassword + ", roles=" + roles + ", lastUpdated="
+				+ lastUpdated + ", email=" + email + ", accounts=" + accounts + ", loans=" + loans + ", cards=" + cards
+				+ ", incomes=" + incomes + "]";
 	}
 
 

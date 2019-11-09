@@ -1,39 +1,44 @@
 package com.nemo.Models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="Loans")
 public class Loan implements Serializable{
 	
-	private enum AccountType{
+	public enum AccountType{
 		CAR,FURNITURE,MORTGAGE,PERSONAL,STUDENT,OTHER;
 	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name="Loan ID")
+	@Column(name="Loan_ID")
 	private int id;
 	
-	@Column(name="Loan Name")
+	@Column(name="Loan_Name")
 	private String loanName;
 	
-	@Column(name="Loan Balance")
+	@Column(name="Loan_Balance")
 	private double loanBalance;
 	
-	@Column(name="Monthly Payment")
+	@Column(name="Monthly_Payment")
 	private double monthlyPayment;
 	
-	@Column(name="Due Date")
+	@Column(name="Due_Date")
 	private Date dueDate;
 	
-	@Column(name="is Paid")
+	@Column(name="is_Paid")
 	private boolean isPaid;
 	
 	@ManyToOne
@@ -44,18 +49,18 @@ public class Loan implements Serializable{
 	@JoinColumn(name="user_id",nullable = false)
 	private User owner;
 	
-	@Column(name="is Closed")
+	@Column(name="is_Closed")
 	private boolean isClosed = false;
 	
-	@Column(name="Last Update")
-	private Date lastUpdated;
+	@Column(name="Last_Update")
+	private Date lastUpdated = new Date();
 	
 	
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setLastUpdated() {
+		this.lastUpdated = new Date();
 	}
 	public int getId() {
 		return id;

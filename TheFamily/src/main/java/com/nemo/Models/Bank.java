@@ -1,11 +1,15 @@
 package com.nemo.Models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,38 +28,46 @@ public class Bank implements Serializable{
 	@Column(name="bank_name")
 	private String bankName;
 	
-	@OneToMany(mappedBy = "bank")
-	private List<Account> accounts;
-	
-	@OneToMany(mappedBy = "bank")
-	private List<Loan> loans;
-	
-	@OneToMany(mappedBy = "bank")
-	private List<CreditCard> cards;
-	
 	@Column(name="last_update")
-	private Date lastUpdated;
+	private Date lastUpdated = new Date();
 	
 	
+	@OneToMany(mappedBy = "bank", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Account> accounts;
 	
+	@OneToMany(mappedBy = "bank", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Loan> loans;
+	
+	@OneToMany(mappedBy = "bank", orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<CreditCard> cards;	
+	
+	
+		
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
+	public Set<Loan> getLoans() {
+		return loans;
+	}
+	public void setLoans(Set<Loan> loans) {
+		this.loans = loans;
+	}
+	public Set<CreditCard> getCards() {
+		return cards;
+	}
+	public void setCards(Set<CreditCard> cards) {
+		this.cards = cards;
+	}
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setLastUpdated() {
+		this.lastUpdated = new Date();
 	}
-	public List<Loan> getLoans() {
-		return loans;
-	}
-	public void setLoans(List<Loan> loans) {
-		this.loans = loans;
-	}
-	public List<CreditCard> getCards() {
-		return cards;
-	}
-	public void setCards(List<CreditCard> cards) {
-		this.cards = cards;
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -68,15 +80,6 @@ public class Bank implements Serializable{
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
 	}
-	public List<Account> getAccounts() {
-		return accounts;
-	}
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
-	}
-	
-	
-	
 	
 	
 }

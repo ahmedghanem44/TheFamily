@@ -1,18 +1,23 @@
 package com.nemo.Models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name="Accounts")
 public class Account implements Serializable{
-	private enum AccountType{
+	
+	public enum AccountType{
 		CURRENT,SAVING;
 	}
 	
@@ -33,7 +38,6 @@ public class Account implements Serializable{
 	@Column(name="account_balance")
 	private double accountBalance;
 	
-	
 	@Column(name="is_closed")
 	private boolean isClosed = false;
 	
@@ -45,15 +49,16 @@ public class Account implements Serializable{
 	@JoinColumn(name="user_id",nullable = false)
 	private User owner;
 	
+	
 	@Column(name="last_update")
-	private Date lastUpdated;
+	private Date lastUpdated = new Date();
 	
 	
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setLastUpdated() {
+		this.lastUpdated = new Date();
 	}
 	public String getAccountName() {
 		return accountName;

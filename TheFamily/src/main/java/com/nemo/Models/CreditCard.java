@@ -1,53 +1,62 @@
 package com.nemo.Models;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="CreditCards")
 public class CreditCard implements Serializable{
-	private enum RewardType{
+	
+	public enum RewardType{
 		CASH,POINTS;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name="Credit ID")
+	@Column(name="Credit_ID")
 	private int id;
 	
-	@Column(name="Credit Name")
+	@Column(name="Credit_Name")
 	private String creditName;
 	
-	@Column(name="Credit Balance")
+	@Column(name="Credit_Balance")
 	private double creditBalance;
 	
-	@Column(name="Credit Limit")
+	@Column(name="Credit_Limit")
 	private double creditLimit;
 	
-	@Column(name="Reward Type")
+	@Column(name="Reward_Type")
 	private RewardType rewardType;
 	
 	@Column(name="Reward")
 	private double reward;
 	
-	@Column(name="Due Date")
+	@Column(name="Due_Date")
 	private Date dueDate;
 	
-	@Column(name="Closing Date")
+	@Column(name="Closing_Date")
 	private Date closingDate;
 	
-	@Column(name="is Paid")
+	@Column(name="is_Paid")
 	private boolean isPaid;
 	
-	@Column(name="Date Of Payment")
+	@Column(name="Date_Of_Payment")
 	private Date datePaid;
 	
-	@Column(name="Last Update")
-	private Date lastUpdated;
+	@Column(name="Last_Update")
+	private Date lastUpdated = new Date();
+	
+	@Column(name="is_Closed")
+	private boolean isClosed = false;
 	
 	@ManyToOne
 	@JoinColumn(name="bank_id",nullable = false)
@@ -61,8 +70,8 @@ public class CreditCard implements Serializable{
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setLastUpdated() {
+		this.lastUpdated = new Date();
 	}
 	public int getId() {
 		return id;
@@ -143,6 +152,6 @@ public class CreditCard implements Serializable{
 	public void setBank(Bank bank) {
 		this.bank = bank;
 	}
-	private boolean isClosed = false;
+	
 	
 }
