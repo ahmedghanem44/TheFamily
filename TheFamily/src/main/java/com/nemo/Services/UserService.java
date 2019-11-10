@@ -77,7 +77,7 @@ public class UserService implements UserDetailsService {
 		toUpdate.setEmail(user.getEmail());
 		toUpdate.setPhone(user.getPhone());
 		toUpdate.setUserName(user.getUserName());
-		toUpdate.setUserPassword(bcrypt.encode(user.getUserPassword()));
+		toUpdate.setUserPassword(user.getUserPassword());
 		toUpdate.setRoles(user.getRoles());
 		toUpdate.setLastUpdated();
 //		toUpdate.setAccounts(user.getAccounts());
